@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+<head>
+<title>Microblog</title>
+<style type="text/css">
+  #timeline {
+    margin: 1em auto;
+  }
+
+  .post {
+    padding: 7px;
+    margin-bottom: 7px;
+  }
+
+  .post q {
+    display: block;
+  }
+
+  #new_post {
+    padding: 7px;
+  }
+
+</style>
+</head>
+<body>
+  <div id="timeline"></div>
+
+  <div id="new_post">
+    <form>
+      <textarea rows=3 name="new_post_text"></textarea>
+      <button>Post</button>
+    </form>
+  </div>
+
+  <script>
+    var users = {
+      '1': {
+        username: 'stevekovach',
+        real_name: 'Steve Kovach',
+        verified: true
+      },
+      '2': {
+        username: 'ConanOBrien',
+        real_name: 'Conan O\' Brien',
+        verified: true
+      },
+      '3': {
+        username: 'mike_matas',
+        real_name: 'Mike Matas',
+        verified: false
+      }
+    };
+
+    var posts = [
+      {
+        id: 2374237842,
+        user: 1,
+        message: 'Go 3 days without your favorite thing. Then go 3 days without sleep. It turns out sleep is actually your favorite thing.',
+        ts: 1337774582
+      },
+      {
+        id: 2374272076,
+        user: 2,
+        message: 'If I were in prison, I wouldn\'t ruin my spoon trying to tunnel out, because going without morning yogurt is its own prison.',
+        ts: 1337968739
+      },
+      {
+        id: 4545435344,
+        user: 3,
+        message: 'Driving over the mountains into California on our way home from Canada.',
+        ts: 1461607139
+      },
+      {
+        id: 4629293242,
+        user: 2,
+        reply_to: 4545435344,
+        message: 'Love this shot. Reminds me of the days Logan and I used to wander the streets looking for tourists to frighten',
+        ts: 1478942943
+      }
+    ];
+
+    for (var i = 0; i < posts.length; i++) {
+      var post = posts[i];
+      var frag = document.createDocumentFragment();
+      var el = document.createElement('div');
+      el.classList.add('post');
+      el.innerHTML = '<div class="post"><q>' + post.message + '</q><cite>' + post.user + '</cite>';
+      frag.appendChild(el);
+      timeline.appendChild(frag);
+    }
+  </script>
+</body>
+</html>
