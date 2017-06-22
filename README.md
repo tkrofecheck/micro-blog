@@ -16,7 +16,12 @@ Please implement the spec (design and product) using these instructions.
 * The stub data (i.e. the posts and users) in `index.html` should not be modified. Everything else can be changed as necessary.
 * There is no need for persistence (database or otherwise) - feel free to only use the client-side data.
 * Feel free to use any libraries you like (or no libraries at all).
+* Please provide pre-built ("dist") artifacts with your pull request - it should be possible for a non-engineer to simply open 
+`index.html` 
+and review your work.
+* Avoid requiring running a server if possible. It's not necessary to mock out an API.
 * Please keep the original Git commit as is.
+* Browser support can be limited to "evergreen" browsers (Chrome, Firefox, Edge)
 
 ## Spec
 
@@ -32,9 +37,14 @@ Please implement the spec (design and product) using these instructions.
 * New post length must be limited and must not be zero; the character counter must be functional (check Zeplin spec for more details).
 * Posts must support the following interactions:
   * Reply: this creates a new post in reply to the original post; replies are visually distinct in the timeline
-  * Repost: this would show the original post in the reposting user's timeline; in this project, it's only used to count reposts
-  * Like: this would save the original post in the reposting user's liked posts lists; in this project, it's only used to count likes
+  * Repost: this shows the original post in the reposting user's timeline
+  * Like: this would save the original post in the reposting user's liked posts lists; in this project, it's only used to count 
+  likes
+* Post interactions should appear via hover on desktop and via tap on mobile.
+* Posts should revert to their pre-interaction state once an interaction has been completed.
 * The interface should be responsive; it should scale with the viewport size.
+* The message entry text box should be visible at all times.
+* Replies should be nested under the posts they are replying to.
 
 ## How to submit your work
 
