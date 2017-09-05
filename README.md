@@ -1,8 +1,8 @@
 # Microblog
 
-This is an incomplete implementation of a Twitter-like single-user microblog timeline. 
+This is an incomplete implementation of a Twitter-like single-user microblog timeline.
 
-Please implement the spec (design and product) using these instructions. 
+Please implement the spec (design and product) using these instructions.
 
 ## Resources
 
@@ -18,7 +18,7 @@ Please implement the spec (design and product) using these instructions.
 * Feel free to use any libraries you like (or no libraries at all).
 * Please provide pre-built ("dist") artifacts with your pull request - it should be possible for a non-engineer to simply open `index.html` and review your work.
 * Avoid requiring running a server if possible. It's not necessary to mock out an API.
-* Please keep the original Git commit as is.
+* Please do not rewrite the Git history - keep the original Git commit and add new commits.
 * Browser support can be limited to "evergreen" browsers (Chrome, Firefox, Edge)
 
 ## Spec
@@ -37,14 +37,14 @@ Please implement the spec (design and product) using these instructions.
 * Posts must support the following interactions:
   * Reply: this creates a new post in reply to the original post; replies are visually distinct in the timeline
   * Repost: this reposts the original post once in the reposting user's timeline
-  * Like: this would save the original post in the reposting user's liked posts lists; in this project, it's only used to count 
+  * Like: this would save the original post in the reposting user's liked posts lists; in this project, it's only used to count
   likes
 * Post interactions should only increment/decrement their counters once.
-* Post interactions should appear via hover on desktop and via tap on mobile; they do not need different hover colors.
+* Post interactions should appear via hover on desktop and via tap on mobile; they do not need different hover colors (use the hover color from the spec for all of these).
 * Posts should revert to their pre-interaction state once an interaction has been completed.
 * The interface should be responsive; it should scale with the viewport size.
 * The message entry text box should be visible at all times.
-* Replies should be nested under the posts they are replying to.
+* Replies should be nested under the posts they are replying to. Chains of replies, i.e. threads, must be logically unlimited (i.e. there can be an unlimited number of replies to replies), but you can add visual limits to nesting if you choose.
 * Post metadata (real name, username, timestamp) should not wrap at mobile sizes.
 
 ## How to submit your work
