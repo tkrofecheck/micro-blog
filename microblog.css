@@ -49,6 +49,7 @@
 }
 
 .post .post-user--posted .post-user--posted_info i {
+    display: table-cell;
     font-family: 'Material Icons';
     width: 14px;
     height: 14px;
