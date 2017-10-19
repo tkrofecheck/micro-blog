@@ -88,14 +88,12 @@
     }
 
     function insertPhotos(photoArray) {
-      if (typeof photoArray === 'undefined' || photoArray.length <= 0) {
-        return;
-      }
-      
       var html = '';
       
-      for (var i = 0; i < photoArray.length; i++) {
-        html += '<img src="' + photoArray[i] + '"/>';
+      if (photoArray && photoArray.length > 0) {
+        for (var i = 0; i < photoArray.length; i++) {
+          html += '<img src="' + photoArray[i] + '"/>';
+        }
       }
 
       return html;
@@ -117,7 +115,7 @@
       }
 
       el.innerHTML = '' +
-      '<img class="post-user--avatar" src="' + users[post.user].username + '" />' +
+      '<img class="post-user--avatar" src="' + users[post.user].username + '.jpg" />' +
       '<div class="post-user--posted">' +
         '<div class="post-user--posted_info">' +
           '<i class="material-icons" data-verified="' + users[post.user].verified + '">verified_user</i>' +

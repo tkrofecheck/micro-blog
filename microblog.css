@@ -18,16 +18,30 @@
     width: 48px;
     height: 48px;
     border-radius: 24px;
-    margin-right: 19px;
+    margin-right: 10px;
 }
 
 .post .post-user--posted {
     width: 100%;
 }
 
+.post .post-user--posted::before {
+    content: '';
+    width: 0;
+    height: 0;
+    border-top: 0px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right: 10px solid #f6f6f6;
+    position: relative;
+    display: block;
+    left: -10px;
+    top: 35px;
+}
+
 .post .post-user--posted .post-user--posted_info {
     display: table;
     width: 100%;
+    margin-bottom: 4px;
 }
 
 .post .post-user--posted .post-user--posted_info user {
@@ -77,19 +91,6 @@
     background-color: #f6f6f6;
 }
 
-.post .post-user--posted .post-user--posted_message::before {
-    content: '';
-    width: 0;
-    height: 0;
-    border-top: 0px solid transparent;
-    border-bottom: 10px solid transparent;
-    border-right: 10px solid #f6f6f6;
-    position: relative;
-    display: block;
-    left: -10px;
-    top: 3px;
-}
-
 .post .post-user--posted .post-user--posted_message q {
     display: table-cell;
     width: 100%;
@@ -110,7 +111,7 @@
 }
 
 .post .post-user--posted .post-user--posted_message .post-user--posted_message-photos img {
-    max-width: 100%;
+    width: 100%;
 }
 
 .post .post-user--posted q::before, .post .post-user--posted q::after {
@@ -122,5 +123,42 @@
 }
 
 #new_post {
-	padding: 7px;
+    padding: 7px;
+    position: fixed;
+    box-sizing: border-box;
+    width: 100%;
+    bottom: 0px;
+    left: 0;
+    right: 0;
+}
+
+form textarea {
+    margin: 0;
+    padding: 7px;
+    width: 100%;
+}
+
+.post.latest-by-loggedin {
+    flex-direction: row-reverse;
+}
+
+.post.latest-by-loggedin .post-user--avatar {
+    margin-right: 0px;
+    margin-left: 10px;
+}
+
+.post.latest-by-loggedin .post-user--posted .post-user--posted_info {
+    display: none;
+}
+
+.post.latest-by-loggedin .post-user--posted .post-user--posted_message {
+    background-color: #00c397;
+}
+
+.post.latest-by-loggedin .post-user--posted::before {
+    border-top: 0px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 10px solid #00c397;
+    left: 100%;
+    top: 20px;
 }
