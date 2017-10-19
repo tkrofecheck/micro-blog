@@ -84,6 +84,16 @@
       frag.appendChild(el);
       timeline.appendChild(frag);
     }
+
+    function createPosts() {
+      for (var i = 0; i < posts.length; i++) {
+        postIt(i);
+      }
+    }
+
+    (function() {
+      createPosts();
+    })();
   </script>
   </body>
 
