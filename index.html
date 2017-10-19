@@ -60,6 +60,31 @@
         ts: 1478942943
       }
     ];
+    
+    function timeSince(ts) {
+      var now = new Date(),
+          timeStamp = new Date(ts * 1000),
+          secondsPast = (now.getTime() - timeStamp.getTime()) / 1000;
+
+      if (secondsPast < 60) {
+        return parseInt(secondsPast) + 's';
+      }
+
+      if (secondsPast < 3600) {
+        return parseInt(secondsPast / 60) + 'm';
+      }
+
+      if (secondsPast <= 86400) {
+        return parseInt(secondsPast / 3600) + 'h';
+      }
+
+      if (secondsPast > 86400) {
+        day = timeStamp.getDate();
+        month = timeStamp.toDateString().match(/ [a-zA-Z]*/)[0].replace(" ", "");
+        year = timeStamp.getFullYear() == now.getFullYear() ? "" : " " + timeStamp.getFullYear();
+        return day + " " + month + year;
+      }
+    }
 
     function postIt(index) {
       var post = posts[index];
@@ -75,6 +100,7 @@
         '<div class="post-user--posted_info">' +
         '<i class="material-icons" data-verified="' + users[post.user].verified + '">verified_user</i>' +
         '<user data-realname="' + users[post.user].real_name + '" data-username="' + users[post.user].username + '"></user>' +
+        '<span class="post-user--posted_info-timestamp">' + timeSince(post.ts) + '</span>' +
         '</div>' +
         '<div class="post-user--posted_message">' +
         '<q>' + post.message + '</q>' +
