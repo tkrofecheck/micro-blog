@@ -61,15 +61,30 @@
       }
     ];
 
-    for (var i = 0; i < posts.length; i++) {
-      var post = posts[i];
+    function postIt(index) {
+      var post = posts[index];
       var frag = document.createDocumentFragment();
       var el = document.createElement('div');
+      var tsYear = new Date(post.ts).getFullYear() + 'y';
+      var tsDate = new Date(post.ts).getDate() + 'd';
+      var tsHours = new Date(post.ts).getHours() + 'h';
       el.classList.add('post');
-      el.innerHTML = '<div class="post"><q>' + post.message + '</q><cite>' + post.user + '</cite>';
+      el.innerHTML = '' +
+        '<img class="post-user--avatar" src="' + users[post.user].username + '.jpg" />' +
+        '<div class="post-user--posted">' +
+        '<div class="post-user--posted_info">' +
+        '<i class="material-icons" data-verified="' + users[post.user].verified + '">verified_user</i>' +
+        '<user data-realname="' + users[post.user].real_name + '" data-username="' + users[post.user].username + '"></user>' +
+        '</div>' +
+        '<div class="post-user--posted_message">' +
+        '<q>' + post.message + '</q>' +
+        '<cite>' + post.user + '</cite>'
+      '</div>'
+      '</div>';
       frag.appendChild(el);
       timeline.appendChild(frag);
     }
   </script>
-</body>
+  </body>
+
 </html>
