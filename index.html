@@ -135,6 +135,8 @@
         frag.appendChild(el);
         timeline.appendChild(frag);
       }
+
+      window.lastPostId = post.id; // used to increment to the next post ID
     }
 
     function createPosts() {
@@ -146,8 +148,31 @@
       }
     }
 
+    function bindEvents() {
+      var newPost = document.getElementById('new_post');
+      var message = newPost.querySelector('textarea[name="new_post_text"]');
+      var postBtn = newPost.querySelector('button');
+
+      postBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        var now = new Date();
+        var timestamp =  now.getTime() / 1000;
+
+        postIt({
+            id: parseInt(window.lastPostId) + 1,
+            user: 2,
+            message: message.value,
+            ts: timestamp
+          });
+      });
+    }
+
     (function() {
       createPosts();
+
+      bindEvents();
     })();
   </script>
   </body>
