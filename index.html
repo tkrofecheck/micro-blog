@@ -101,7 +101,7 @@
       return html;
     }
 
-    function postIt(post) {
+    function postIt(post, newPost) {
       var frag = document.createDocumentFragment();
       var el = document.createElement('div');
       var tsYear = new Date(post.ts).getFullYear() + 'y';
@@ -111,8 +111,13 @@
 
       el.setAttribute('data-id', post.id);
       el.classList.add('post');
+      
+      if (newPost) {
+        el.classList.add('latest-by-loggedin');
+      }
+
       el.innerHTML = '' +
-      '<img class="post-user--avatar" src="' + users[post.user].username + '.jpg" />' +
+      '<img class="post-user--avatar" src="' + users[post.user].username + '" />' +
       '<div class="post-user--posted">' +
         '<div class="post-user--posted_info">' +
           '<i class="material-icons" data-verified="' + users[post.user].verified + '">verified_user</i>' +
@@ -144,7 +149,7 @@
       
       for (var i = 0; i < posts.length; i++) {
         post = posts[i];
-        postIt(post);
+        postIt(post, false);
       }
     }
 
@@ -159,19 +164,34 @@
 
         var now = new Date();
         var timestamp =  now.getTime() / 1000;
+        var photos = [];
 
-        postIt({
-            id: parseInt(window.lastPostId) + 1,
-            user: 2,
-            message: message.value,
-            ts: timestamp
-          });
+        posts.push({
+          id: parseInt(window.lastPostId) + 1,
+          user: 4,
+          photos: photos,
+          message: message.value,
+          ts: timestamp
+        });
+
+        postIt(posts[posts.length-1], true);
       });
     }
 
     (function() {
+      // On load, this is the user logged in.
+      users['4'] = {
+        username: 'bettermortgage',
+        real_name: 'Better Mortgage',
+        verified: true
+      };
+
+      window.currentUser = users['4'].username;
+      
+      // Load pre-existing posts
       createPosts();
 
+      // Bind events to new post form and post replies
       bindEvents();
     })();
   </script>
