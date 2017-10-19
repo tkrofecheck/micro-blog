@@ -50,6 +50,7 @@
         id: 4545435344,
         user: 3,
         message: 'Something beautiful for you from Cornwall.',
+        photos: ['cornwall.jpg'],
         ts: 1461607139
       },
       {
@@ -86,6 +87,20 @@
       }
     }
 
+    function insertPhotos(photoArray) {
+      if (typeof photoArray === 'undefined' || photoArray.length <= 0) {
+        return;
+      }
+      
+      var html = '';
+      
+      for (var i = 0; i < photoArray.length; i++) {
+        html += '<img src="' + photoArray[i] + '"/>';
+      }
+
+      return html;
+    }
+
     function postIt(post) {
       var frag = document.createDocumentFragment();
       var el = document.createElement('div');
@@ -106,6 +121,7 @@
         '</div>' +
         '<div class="post-user--posted_message">' +
           '<q>' + post.message + '</q>' +
+          '<div class="post-user--posted_message-photos">' + insertPhotos(post.photos) + '</div>' +
           '<cite>' + post.user + '</cite>' +
         '</div>' + 
         '<div class="post-user--posted_message-replies"></div>' +
