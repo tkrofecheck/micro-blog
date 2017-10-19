@@ -140,6 +140,7 @@
       }
 
       window.lastPostId = post.id; // used to increment to the next post ID
+      window.scrollTo(0, document.querySelector('[data-id="' + post.id + '"]').getBoundingClientRect().top);
     }
 
     function createPosts() {
