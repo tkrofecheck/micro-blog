@@ -1,0 +1,16 @@
+#timeline {
+	margin: 1em auto;
+}
+
+.post {
+	padding: 7px;
+	margin-bottom: 7px;
+}
+
+.post q {
+	display: block;
+}
+
+#new_post {
+	padding: 7px;
+}
