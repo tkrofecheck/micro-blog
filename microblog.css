@@ -213,6 +213,7 @@ form button {
     color: #00c397;
     background: transparent;
     border: 0;
+    font-size: 20px;
 }
 
 .post.loggedin-user {
