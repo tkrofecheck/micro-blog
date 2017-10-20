@@ -9,8 +9,9 @@
 
   <div id="new_post">
     <form>
-      <textarea rows=3 name="new_post_text"></textarea>
-      <button>Post</button>
+      <label for="text_post_message">140</label>
+      <textarea rows="2" id="text_post_message" name="new_post_text"></textarea>
+      <button>send</button>
     </form>
   </div>
 
@@ -66,7 +67,7 @@
       var now = new Date(),
           timeStamp = new Date(ts * 1000),
           secondsPast = (now.getTime() - timeStamp.getTime()) / 1000;
-
+      
       if (secondsPast < 60) {
         return parseInt(secondsPast) + 's';
       }
@@ -109,10 +110,6 @@
 
       el.setAttribute('data-id', post.id);
       el.classList.add('post');
-      
-      if (newPost) {
-        el.classList.add('latest-by-loggedin');
-      }
 
       el.innerHTML = '' +
       '<img class="post-user--avatar" src="' + users[post.user].username + '.jpg" />' +
@@ -120,7 +117,7 @@
         '<div class="post-user--posted_info">' +
           '<i class="material-icons" data-verified="' + users[post.user].verified + '">verified_user</i>' +
           '<user data-realname="' + users[post.user].real_name + '" data-username="' + users[post.user].username + '"></user>' +
-          '<span class="post-user--posted_info-timestamp">' + timeSince(post.ts) + '</span>' +
+          '<span data-ts="' + post.ts + '" class="post-user--posted_info-timestamp">' + timeSince(post.ts) + '</span>' +
         '</div>' +
         '<div class="post-user--posted_message">' +
           '<q>' + post.message + '</q>' +
@@ -139,6 +136,15 @@
         timeline.appendChild(frag);
       }
 
+      if (newPost) {
+        el.classList.add('loggedin-user');
+        el.classList.add('latest-post');
+
+        setTimeout(function () {
+          el.classList.add('fade-in');
+        }, 50);
+      }
+
       window.lastPostId = post.id; // used to increment to the next post ID
       window.scrollTo(0, document.querySelector('[data-id="' + post.id + '"]').getBoundingClientRect().top);
     }
@@ -154,8 +160,44 @@
 
     function bindEvents() {
       var newPost = document.getElementById('new_post');
-      var message = newPost.querySelector('textarea[name="new_post_text"]');
+      var message = newPost.querySelector('textarea[id="text_post_message"]');
       var postBtn = newPost.querySelector('button');
+      var limitLbl = newPost.querySelector('label[for="text_post_message"]');
+
+      function resetLatestPost() {
+        var latest = document.querySelectorAll('.latest-post');
+
+        for (let i=0; i < latest.length; i++) {
+          latest[i].classList.remove('latest-post');
+          latest[i].classList.remove('fade-in');
+        }
+      }
+
+      function updatePostTimes() {
+        var timeline = document.getElementById('timeline');
+        var postArr = timeline.querySelectorAll('.post');
+        var postTimestamp;
+        var timestamp;
+
+        for (let i = 0; i < postArr.length; i++) {
+          postTimestamp = postArr[i].querySelector('.post-user--posted_info-timestamp');
+          timestamp = parseInt(postTimestamp.getAttribute('data-ts'));
+          postTimestamp.innerHTML = timeSince(timestamp);
+        }
+      }
+
+      function textAreaHandler() {
+        var length = this.value.length;
+        var charsRemaining = 140 - length;
+
+        if (length > 140) {
+          limitLbl.classList.add('warning');
+        } else {
+          limitLbl.classList.remove('warning');
+        }
+
+        limitLbl.innerHTML = charsRemaining;
+      }
 
       postBtn.addEventListener('click', function(e) {
         e.preventDefault();
@@ -165,16 +207,24 @@
         var timestamp =  now.getTime() / 1000;
         var photos = [];
 
-        posts.push({
-          id: parseInt(window.lastPostId) + 1,
-          user: 4,
-          photos: photos,
-          message: message.value,
-          ts: timestamp
-        });
+        if (message.value.length <= 140) {
+          posts.push({
+            id: parseInt(window.lastPostId) + 1,
+            user: 4,
+            photos: photos,
+            message: message.value,
+            ts: timestamp
+          });
 
-        postIt(posts[posts.length-1], true);
+          resetLatestPost();
+          updatePostTimes();
+          postIt(posts[posts.length-1], true);
+        } else {
+          alert('Message is limited to 140 characters.');
+        }
       });
+
+      message.addEventListener('keypress', textAreaHandler, true);
     }
 
     (function() {
@@ -185,6 +235,7 @@
         verified: true
       };
 
+      // Define the current user who is logged in
       window.currentUser = users['4'].username;
       
       // Load pre-existing posts
