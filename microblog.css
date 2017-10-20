@@ -11,6 +11,10 @@ html, body, div, span {
 	margin: 10px 10px 60px 10px;
 }
 
+#timeline ul {
+    list-style-type: none;
+}
+
 .post {
     position: relative;
     display: flex;
@@ -113,6 +117,70 @@ html, body, div, span {
     background-color: #f6f6f6;
     top: -10px;
     position: relative;
+}
+
+.post .post-user--posted .post-user--posted_message .post-user--posted_message-social {
+    display: none;
+    width: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.post .post-user--posted .post-user--posted_message:hover .post-user--posted_message-social,
+.post .post-user--posted .post-user--posted_message.hover .post-user--posted_message-social {
+    content: '';
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    font-family: 'Material Icons';
+    background-color: #f6f6f6;
+    padding: 0px;
+    border-radius: inherit;
+}
+
+.post .post-user--posted .post-user--posted_message:hover .post-user--posted_message-social li,
+.post .post-user--posted .post-user--posted_message.hover .post-user--posted_message-social li {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.post .post-user--posted .post-user--posted_message:hover .post-user--posted_message-social span,
+.post .post-user--posted .post-user--posted_message.hover .post-user--posted_message-social span {
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;
+    color: #092828;
+    width: 50px; /* calculated as icon width + icon padding (20 + 30) */
+    text-align: center;
+}
+
+.post .post-user--posted .post-user--posted_message:hover .post-user--posted_message-social input.material-icons,
+.post .post-user--posted .post-user--posted_message.hover .post-user--posted_message-social input.material-icons {
+    font-size: 20px;
+    border: 0;
+    background: transparent;
+    color: #092828;
+    transition: color .1s ease-in-out;
+    padding: 15px;
+}
+
+.post .post-user--posted .post-user--posted_message:hover .post-user--posted_message-social input.material-icons:focus,
+.post .post-user--posted .post-user--posted_message.hover .post-user--posted_message-social input.material-icons:focus {
+    outline: none;
+}
+
+.post .post-user--posted .post-user--posted_message:hover .post-user--posted_message-social input.material-icons:hover,
+.post .post-user--posted .post-user--posted_message.hover .post-user--posted_message-social input.material-icons:hover {
+    color: #00c397;
 }
 
 .post .post-user--posted .post-user--posted_message q {
@@ -254,6 +322,10 @@ form button {
 
 .post.loggedin-user.latest-post .post-user--posted .post-user--posted_message {
     background-color: #00c397;
+}
+
+.post.loggedin-user.latest-post .post-user--posted .post-user--posted_message:hover::after:hover {
+    color: #00c397;;
 }
 
 .post.loggedin-user.latest-post .post-user--posted .post-user--posted_message q {

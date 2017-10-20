@@ -134,6 +134,18 @@
           '<q>' + post.message + '</q>' +
           '<div class="post-user--posted_message-photos">' + insertPhotos(post.photos) + '</div>' +
           '<cite>' + post.user + '</cite>' +
+          '<ul class="post-user--posted_message-social">' +
+            '<li>' +
+              '<input type="button" class="material-icons" data-id="' + post.id + '" value="reply">' +
+              '<input type="button" class="material-icons" data-id="' + post.id + '" value="repeat">' +
+              '<input type="button" class="material-icons" data-id="' + post.id + '" value="favorite">' +
+            '</li>' +
+            '<li>' +
+              '<span data-type="reply">0</span>' +
+              '<span data-type="repeat">0</span>' +
+              '<span data-type="favorite">0</span>' +
+            '</li>' +
+          '</ul>' +
         '</div>' + 
         '<div class="post-user--posted_message-replies"></div>' +
       '</div>';
