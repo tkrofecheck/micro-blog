@@ -283,7 +283,7 @@
         var timestamp =  now.getTime() / 1000;
         var photos = [];
 
-        if (message.value.length <= 140) {
+        if (message.value.length > 0 && message.value.length <= 140) {
           posts.push({
             id: parseInt(window.lastPostId) + 1,
             user: 4,
