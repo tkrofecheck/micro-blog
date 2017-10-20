@@ -1,9 +1,14 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
+html, body, div, span {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
 #timeline {
-    position: relative;
-	margin: 1em;
+	margin: 20px 20px 70px 20px;
 }
 
 .post {
@@ -22,7 +27,7 @@
 }
 
 .post .post-user--posted {
-    width: 100%;
+    width: calc(100% - 116px);
 }
 
 .post .post-user--posted::before {
@@ -35,13 +40,15 @@
     position: relative;
     display: block;
     left: -10px;
-    top: 35px;
+    top: 25px;
 }
 
 .post .post-user--posted .post-user--posted_info {
     display: table;
     width: 100%;
     margin-bottom: 4px;
+    top: -10px;
+    position: relative;
 }
 
 .post .post-user--posted .post-user--posted_info user {
@@ -89,6 +96,8 @@
     width: 100%;
     border-radius: 7px;
     background-color: #f6f6f6;
+    top: -10px;
+    position: relative;
 }
 
 .post .post-user--posted .post-user--posted_message q {
@@ -108,6 +117,8 @@
 
 .post .post-user--posted .post-user--posted_message .post-user--posted_message-photos {
     border-radius: inherit;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
     overflow: hidden;
 }
 
@@ -120,8 +131,12 @@
     content: '';
 }
 
-.post .post-user--posted .post-user--posted_message-replies {
+.post .post-user--posted .post-user--posted_message-replies > div.post {
     padding-top: 17px;
+}
+
+.post .post-user--posted .post-user--posted_message-replies .post-user--posted {
+    width: 100%;
 }
 
 #new_post {
@@ -134,33 +149,94 @@
     right: 0;
 }
 
+form {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    border-top: solid 1px #00c397;
+}
+
+form label {
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    font-family: Roboto;
+    font-size: 11px;
+    text-align: left;
+    color: #00c397;
+    width: 35px;
+}
+
+form label.warning {
+    color: #FF6F6C;
+}
+
 form textarea {
     margin: 0;
     padding: 7px;
     width: 100%;
+    border: 0;
+    resize: none;
+    font-size: 15px;
+    text-align: left;
+    color: #092828;
 }
 
-.post.latest-by-loggedin {
+form button {
+    font-family: 'Material Icons';
+    color: #00c397;
+    background: transparent;
+    border: 0;
+}
+
+.post.loggedin-user {
     flex-direction: row-reverse;
 }
 
-.post.latest-by-loggedin .post-user--avatar {
+.post.latest-post {
+    opacity: 0;
+    transition: opacity .4s ease-in;
+}
+
+.post.latest-post.fade-in {
+    opacity: 1;
+}
+
+.post.loggedin-user .post-user--avatar {
     margin-right: 0px;
     margin-left: 10px;
 }
 
-.post.latest-by-loggedin .post-user--posted .post-user--posted_info {
-    display: none;
+.post.loggedin-user .post-user--posted .post-user--posted_info {
+    margin-top: -17px;
 }
 
-.post.latest-by-loggedin .post-user--posted .post-user--posted_message {
+.post.loggedin-user .post-user--posted .post-user--posted_info i,
+.post.loggedin-user .post-user--posted .post-user--posted_info user {
+    visibility: hidden;
+}
+
+.post.loggedin-user .post-user--posted .post-user--posted_info span {
+    padding-right: 7px;
+}
+
+.post.loggedin-user.latest-post .post-user--posted .post-user--posted_message {
     background-color: #00c397;
 }
 
-.post.latest-by-loggedin .post-user--posted::before {
+.post.loggedin-user.latest-post .post-user--posted .post-user--posted_message q {
+    color: #ffffff;
+}
+
+.post.loggedin-user.latest-post .post-user--posted::before {
     border-top: 0px solid transparent;
     border-bottom: 10px solid transparent;
     border-left: 10px solid #00c397;
     left: 100%;
-    top: 20px;
+    top: 10px;
 }
