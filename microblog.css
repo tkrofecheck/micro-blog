@@ -74,7 +74,7 @@ html, body, div, span {
     display: table-cell;
     vertical-align: middle;
     height: 13px;
-    font-size: 11px;
+    font-size: 10px;
     text-align: left;
     color: #092828;
     padding-left: 3px;
@@ -363,5 +363,9 @@ form button {
 
     .post .post-user--posted::before {
         top: 25px;
+    }
+
+    .post .post-user--posted .post-user--posted_info user {
+        font-size: 11px;
     }
 }
