@@ -229,6 +229,8 @@
           resetLatestPost();
           updatePostTimes();
           postIt(posts[posts.length-1], true);
+          message.value = '';
+          limitLbl.innerHTML = '140';
         } else {
           alert('Message is limited to 140 characters.');
         }
