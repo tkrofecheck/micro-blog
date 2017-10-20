@@ -111,8 +111,18 @@
       el.setAttribute('data-id', post.id);
       el.classList.add('post');
 
-      el.innerHTML = '' +
-      '<img class="post-user--avatar" src="' + users[post.user].username + '.jpg" />' +
+      /* 
+      *  - Using this hack since I don't know how to reference the user account image
+      *    since there is no true reference in data objects
+      *  - static images renamed to usernames to be able to use
+      */
+      if (newPost) {
+        el.innerHTML += '<div class="post-user--avatar"><img src="' + users[post.user].username + '.svg" /></div>';
+      } else {
+        el.innerHTML += '<div class="post-user--avatar"><img src="' + users[post.user].username + '.jpg" /></div>';
+      }
+
+      el.innerHTML +=
       '<div class="post-user--posted">' +
         '<div class="post-user--posted_info">' +
           '<i class="material-icons" data-verified="' + users[post.user].verified + '">verified_user</i>' +
