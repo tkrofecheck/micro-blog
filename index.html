@@ -63,6 +63,43 @@
         ts: 1478942943
       }
     ];
+
+    function useWebStorage() {
+      try {
+        sessionStorage.setItem('test', 'test');
+        sessionStorage.removeItem('test');
+        return true;
+      } catch(e) {
+        console.log('Session storage is not supported.', e);
+        return false;
+      }
+    }
+    function storeData(type) {
+        if (type === 'users') {
+          sessionStorage.setItem('users', JSON.stringify(users));
+        }
+
+        if (type === 'posts') {
+          sessionStorage.setItem('posts', JSON.stringify(posts));
+        }
+    }
+
+    function getData() {
+      var webStorageAvail = useWebStorage();
+
+      if (webStorageAvail) {
+        var ssUsers = sessionStorage.getItem('users');
+        var ssPosts = sessionStorage.getItem('posts');
+
+        if (typeof ssUsers !== 'undefined' && ssUsers !== null) {
+          users = JSON.parse(ssUsers);
+        }
+
+        if (typeof ssUsers !== 'undefined' && ssPosts !== null) {
+          posts = JSON.parse(ssPosts);
+        }
+      }
+    }
     
     function timeSince(ts) {
       var now = new Date(),
@@ -112,12 +149,16 @@
       el.setAttribute('data-id', post.id);
       el.classList.add('post');
 
+      if (currentUser === users[post.user].username) {
+        el.classList.add('loggedin-user');
+      }
+
       /* 
       *  - Using this hack since I don't know how to reference the user account image
       *    since there is no true reference in data objects
       *  - static images renamed to usernames to be able to use
       */
-      if (newPost) {
+      if (newPost || currentUser === users[post.user].username) {
         el.innerHTML += '<div class="post-user--avatar"><img src="' + users[post.user].username + '.svg" /></div>';
       } else {
         el.innerHTML += '<div class="post-user--avatar"><img src="' + users[post.user].username + '.jpg" /></div>';
@@ -159,6 +200,8 @@
         timeline.appendChild(frag);
       }
 
+      bind_newPostEvents(frag);
+
       if (newPost) {
         el.classList.add('loggedin-user');
         el.classList.add('latest-post');
@@ -170,6 +213,16 @@
 
       window.lastPostId = post.id; // used to increment to the next post ID
       window.scrollTo(0, document.querySelector('[data-id="' + post.id + '"]').getBoundingClientRect().top);
+    }
+
+    function bind_newPostEvents(post) {
+      var inputs = post.querySelectorAll('input.material-icons');
+
+      for (let i = 0; i < inputs.length; i++) {
+        inputs[i].addEventListener('click', function(e) {
+          console.log(e);
+        });
+      }
     }
 
     function createPosts() {
@@ -239,6 +292,7 @@
             ts: timestamp
           });
 
+          storeData('posts');
           resetLatestPost();
           updatePostTimes();
           postIt(posts[posts.length-1], true);
@@ -253,12 +307,22 @@
     }
 
     (function() {
+      if ((typeof window.orientation !== "undefined") || navigator.userAgent.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile/i)) {
+        document.getElementsByTagName('body')[0].classList.add('mobile');
+      }
+
+      // Get Data from Session Cache
+      getData();
+      
       // On load, this is the user logged in.
       users['4'] = {
         username: 'bettermortgage',
         real_name: 'Better Mortgage',
         verified: true
       };
+
+      // Add Users in Session Cache
+      storeData('users');
 
       // Define the current user who is logged in
       window.currentUser = users['4'].username;
