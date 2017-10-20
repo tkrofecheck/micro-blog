@@ -107,10 +107,12 @@
 }
 
 .post .post-user--posted .post-user--posted_message .post-user--posted_message-photos {
-    display: block;
+    border-radius: inherit;
+    overflow: hidden;
 }
 
 .post .post-user--posted .post-user--posted_message .post-user--posted_message-photos img {
+    display:block;
     width: 100%;
 }
 
