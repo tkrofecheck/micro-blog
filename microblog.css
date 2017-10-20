@@ -242,10 +242,6 @@ form button {
     height: 65%;
 }
 
-.post.loggedin-user .post-user--posted .post-user--posted_info {
-    margin-top: -17px;
-}
-
 .post.loggedin-user .post-user--posted .post-user--posted_info i,
 .post.loggedin-user .post-user--posted .post-user--posted_info user {
     visibility: hidden;
@@ -289,9 +285,5 @@ form button {
 
     .post .post-user--posted::before {
         top: 25px;
-    }
-
-    .post.loggedin-user .post-user--posted .post-user--posted_info {
-        margin-top: 0;
     }
 }
