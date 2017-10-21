@@ -258,7 +258,7 @@ Microblog.prototype.bind_newPostEvents = function(post) {
 						repost.user = _this.currentUser.id;
 
 						// Update timestamp of repost
-						now = new Date;
+						now = new Date();
 						repost.ts = now.getTime() / 1000;
 
 						_this.posts.push(repost);
