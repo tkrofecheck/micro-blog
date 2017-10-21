@@ -4,6 +4,9 @@ function Microblog(container, users, posts) {
 	this.posts = posts;
 	this.currentUser = null;
 	this.lastPostId = this.posts[this.posts.length - 1].id;
+	this.replyId = null;
+	this.repeatId = null;
+	this.faveId = null;
 }
 
 Microblog.prototype.useWebStorage = function() {
@@ -206,12 +209,64 @@ Microblog.prototype.postIt = function(post, newPost) {
 };
 
 Microblog.prototype.bind_newPostEvents = function(post) {
+	var _this = this;
 	var inputs = post.querySelectorAll('input.material-icons');
 
+	function increment(target) {
+		var tParent = target.parentElement;
+		var tParentSibling = tParent.nextSibling;
+		var tCounter = tParentSibling.querySelector(
+			'span[data-type=' + target.value + ']'
+		);
+
+		var value = parseInt(tCounter.innerHTML);
+
+		if (tCounter.getAttribute('data-type') === 'favorite') {
+			if (tCounter.classList.contains('done')) {
+				tCounter.innerHTML = value - 1;
+				tCounter.classList.remove('done');
+			} else {
+				tCounter.innerHTML = value + 1;
+				tCounter.classList.add('done');
+			}
+		} else {
+			tCounter.innerHTML = value + 1;
+		}
+	}
+
+	function repeat(id) {}
+
+	function fave(id) {}
+
+	function reply(id) {}
+
+	function social_clickHandler(e) {
+		var target = e.currentTarget;
+		var postId = target.getAttribute('data-id');
+
+		increment(target);
+
+		switch (target.value) {
+			case 'repeat':
+				_this.repeatId = postId;
+				repeat(postId);
+				break;
+
+			case 'favorite':
+				_this.faveId = postId;
+				fave(postId);
+				break;
+
+			default:
+				// reply
+				_this.replyId = postId;
+				reply(postId);
+				break;
+		}
+	}
+
 	for (let i = 0; i < inputs.length; i++) {
-		inputs[i].addEventListener('click', function(e) {
-			console.log(e);
-		});
+		inputs[i].addEventListener('click', social_clickHandler);
 	}
 };
 
@@ -270,7 +325,7 @@ Microblog.prototype.bindEvents = function() {
 	postBtn.addEventListener('click', function(e) {
 		e.preventDefault();
 		e.stopPropagation();
-        
+
 		var now = new Date();
 		var timestamp = now.getTime() / 1000;
 		var photos = [];
@@ -283,7 +338,7 @@ Microblog.prototype.bindEvents = function() {
 		};
 
 		if (message.value.length > 0 && message.value.length <= 140) {
-            _this.posts.push(newPost);
+			_this.posts.push(newPost);
 
 			resetLatestPost();
 			updatePostTimes();
