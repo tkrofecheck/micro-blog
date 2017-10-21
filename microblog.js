@@ -1,9 +1,9 @@
 function Microblog(container, users, posts) {
-    this.container = document.querySelector(container);
-    this.users = users;
+	this.container = document.querySelector(container);
+	this.users = users;
 	this.posts = posts;
 	this.currentUser = null;
-    this.lastPostId = null;
+	this.lastPostId = this.posts[this.posts.length - 1].id;
 }
 
 Microblog.prototype.useWebStorage = function() {
@@ -185,7 +185,7 @@ Microblog.prototype.postIt = function(post, newPost) {
 		this.container.appendChild(frag);
 	}
 
-	this.bind_newPostEvents(frag);
+	this.bind_newPostEvents(el);
 
 	if (newPost) {
 		el.classList.add('loggedin-user');
@@ -196,7 +196,7 @@ Microblog.prototype.postIt = function(post, newPost) {
 		}, 50);
 	}
 
-	this.lastPostId = post.id; // used to increment to the next post ID
+	this.lastPostId = parseInt(post.id); // used to increment to the next post ID
 	window.scrollTo(
 		0,
 		document
@@ -270,25 +270,26 @@ Microblog.prototype.bindEvents = function() {
 	postBtn.addEventListener('click', function(e) {
 		e.preventDefault();
 		e.stopPropagation();
-
+        
 		var now = new Date();
 		var timestamp = now.getTime() / 1000;
 		var photos = [];
+		var newPost = {
+			id: parseInt(_this.lastPostId) + 1,
+			user: 4,
+			photos: photos,
+			message: message.value,
+			ts: timestamp
+		};
 
 		if (message.value.length > 0 && message.value.length <= 140) {
-			posts.push({
-				id: parseInt(window.lastPostId) + 1,
-				user: 4,
-				photos: photos,
-				message: message.value,
-				ts: timestamp
-			});
+            _this.posts.push(newPost);
 
 			resetLatestPost();
 			updatePostTimes();
 
 			_this.storeData('posts');
-			_this.postIt(posts[posts.length - 1], true);
+			_this.postIt(newPost, true);
 			message.value = '';
 			limitLbl.innerHTML = '140';
 		} else {
