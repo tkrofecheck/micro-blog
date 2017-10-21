@@ -264,6 +264,7 @@ Microblog.prototype.bind_newPostEvents = function(post) {
 						_this.posts.push(repost);
 						_this.storeData('posts');
 						_this.postIt(repost, true);
+						_this.callback();
 						reposted = true;
 						break;
 					}
