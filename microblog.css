@@ -193,6 +193,7 @@ html, body, div, span {
     text-align: left;
     color: #092828;
     padding: 16px;
+    word-break: break-all;
 }
 
 .post .post-user--posted .post-user--posted_message cite {
