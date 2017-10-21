@@ -7,6 +7,7 @@ function Microblog(container, users, posts) {
 	this.replyId = null;
 	this.repeatId = null;
 	this.faveId = null;
+	this.callback = function() {};
 }
 
 Microblog.prototype.useWebStorage = function() {
@@ -25,11 +26,11 @@ Microblog.prototype.storeData = function(type) {
 
 	if (webStorageAvail) {
 		if (type === 'users') {
-			sessionStorage.setItem('users', JSON.stringify(users));
+			sessionStorage.setItem('users', JSON.stringify(this.users));
 		}
 
 		if (type === 'posts') {
-			sessionStorage.setItem('posts', JSON.stringify(posts));
+			sessionStorage.setItem('posts', JSON.stringify(this.posts));
 		}
 	}
 };
@@ -211,6 +212,8 @@ Microblog.prototype.postIt = function(post, newPost) {
 Microblog.prototype.bind_newPostEvents = function(post) {
 	var _this = this;
 	var inputs = post.querySelectorAll('input.material-icons');
+	var newPost = document.getElementById('new_post');
+	var message = newPost.querySelector('textarea[id="text_post_message"]');
 
 	function increment(target) {
 		var tParent = target.parentElement;
@@ -234,32 +237,42 @@ Microblog.prototype.bind_newPostEvents = function(post) {
 		}
 	}
 
-	function repeat(id) {}
+	function repeat(id) {
+		_this.repeatId = id;
+	}
 
-	function fave(id) {}
+	function fave(id) {
+        _this.callback();
+	}
 
-	function reply(id) {}
+	function reply(id) {
+		_this.replyId = id;
+
+		message.focus();
+		message.classList.add('reply');
+	}
 
 	function social_clickHandler(e) {
 		var target = e.currentTarget;
 		var postId = target.getAttribute('data-id');
 
-		increment(target);
+		//increment(target);
 
+        _this.callback = function() {
+            increment(target)
+        }.bind(target);
+        
 		switch (target.value) {
 			case 'repeat':
-				_this.repeatId = postId;
 				repeat(postId);
 				break;
 
 			case 'favorite':
-				_this.faveId = postId;
 				fave(postId);
 				break;
 
 			default:
 				// reply
-				_this.replyId = postId;
 				reply(postId);
 				break;
 		}
@@ -329,7 +342,9 @@ Microblog.prototype.bindEvents = function() {
 		var now = new Date();
 		var timestamp = now.getTime() / 1000;
 		var photos = [];
-		var newPost = {
+		var newPost;
+
+		newPost = {
 			id: parseInt(_this.lastPostId) + 1,
 			user: 4,
 			photos: photos,
@@ -338,7 +353,15 @@ Microblog.prototype.bindEvents = function() {
 		};
 
 		if (message.value.length > 0 && message.value.length <= 140) {
-			_this.posts.push(newPost);
+			if (message.classList.contains('reply')) {
+				newPost.reply_to = parseInt(_this.replyId);
+				message.classList.remove('reply');
+				_this.replyId = null;
+				_this.callback();
+			}
+
+            _this.posts.push(newPost);
+            console.log('posts', _this.posts);
 
 			resetLatestPost();
 			updatePostTimes();
