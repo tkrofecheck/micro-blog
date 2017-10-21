@@ -221,13 +221,13 @@ Microblog.prototype.bind_newPostEvents = function(post) {
 
 		var value = parseInt(tCounter.innerHTML);
 
-		if (tCounter.getAttribute('data-type') === 'favorite') {
-			if (tCounter.classList.contains('done')) {
+		if (target.value === 'favorite') {
+			if (target.classList.contains('done')) {
 				tCounter.innerHTML = value - 1;
-				tCounter.classList.remove('done');
+				target.classList.remove('done');
 			} else {
 				tCounter.innerHTML = value + 1;
-				tCounter.classList.add('done');
+				target.classList.add('done');
 			}
 		} else {
 			tCounter.innerHTML = value + 1;

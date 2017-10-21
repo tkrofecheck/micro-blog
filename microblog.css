@@ -179,7 +179,8 @@ html, body, div, span {
 }
 
 .post .post-user--posted .post-user--posted_message:hover .post-user--posted_message-social input.material-icons:hover,
-.post .post-user--posted .post-user--posted_message.hover .post-user--posted_message-social input.material-icons:hover {
+.post .post-user--posted .post-user--posted_message.hover .post-user--posted_message-social input.material-icons:hover,
+.post .post-user--posted .post-user--posted_message .post-user--posted_message-social input.material-icons.done {
     color: #00c397;
 }
 
