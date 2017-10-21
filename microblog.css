@@ -249,6 +249,11 @@ form {
     right: 0;
     display: flex;
     border-top: solid 1px #00c397;
+    transition: border .2s ease-in-out;
+}
+
+.warning form {
+    border-color: #FF6F6C;
 }
 
 form label {
@@ -258,11 +263,12 @@ form label {
     font-family: Roboto;
     font-size: 11px;
     text-align: left;
-    color: #00c397;
     width: 35px;
+    color: #00c397;
+    transition: color .2s ease-in-out;
 }
 
-form label.warning {
+.warning label {
     color: #FF6F6C;
 }
 
@@ -274,6 +280,7 @@ form textarea {
     resize: none;
     font-size: 15px;
     text-align: left;
+    outline: none;
     color: #092828;
 }
 
@@ -283,6 +290,12 @@ form button {
     background: transparent;
     border: 0;
     font-size: 20px;
+    color: #00c397;
+    transition: color .2s ease-in-out;
+}
+
+.warning button {
+    color: #B1BEBE;
 }
 
 .post.loggedin-user {
