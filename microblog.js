@@ -287,6 +287,7 @@ Microblog.prototype.bind_newPostEvents = function(post) {
 	function social_clickHandler(e) {
 		var target = e.currentTarget;
 		var postId = target.getAttribute('data-id');
+		var proceed;
 
 		_this.callback = function() {
 			increment(target);
@@ -294,7 +295,10 @@ Microblog.prototype.bind_newPostEvents = function(post) {
 
 		switch (target.value) {
 			case 'repeat':
-				repeat(postId);
+				proceed = confirm('Continue to repost?');
+				if (proceed) {
+					repeat(postId);
+				}
 				break;
 
 			case 'favorite':
