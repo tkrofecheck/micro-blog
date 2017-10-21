@@ -2,11 +2,9 @@ function Microblog(container, users, posts) {
 	this.container = document.querySelector(container);
 	this.users = users;
 	this.posts = posts;
-	this.currentUser = null;
+	this.currentUser = {};
 	this.lastPostId = this.posts[this.posts.length - 1].id;
 	this.replyId = null;
-	this.repeatId = null;
-	this.faveId = null;
 	this.callback = function() {};
 }
 
@@ -16,7 +14,7 @@ Microblog.prototype.useWebStorage = function() {
 		sessionStorage.removeItem('test');
 		return true;
 	} catch (e) {
-		console.log('Session storage is not supported.', e);
+		console.warn('Session storage is not supported.', e);
 		return false;
 	}
 };
@@ -106,7 +104,7 @@ Microblog.prototype.postIt = function(post, newPost) {
 	el.setAttribute('data-id', post.id);
 	el.classList.add('post');
 
-	if (this.currentUser === this.users[post.user].username) {
+	if (this.currentUser.username === this.users[post.user].username) {
 		el.classList.add('loggedin-user');
 	}
 
@@ -115,7 +113,10 @@ Microblog.prototype.postIt = function(post, newPost) {
       *    since there is no true reference in data objects
       *  - static images renamed to usernames to be able to use
       */
-	if (newPost || this.currentUser === this.users[post.user].username) {
+	if (
+		newPost ||
+		this.currentUser.username === this.users[post.user].username
+	) {
 		el.innerHTML +=
 			'<div class="post-user--avatar"><img src="' +
 			this.users[post.user].username +
@@ -201,12 +202,6 @@ Microblog.prototype.postIt = function(post, newPost) {
 	}
 
 	this.lastPostId = parseInt(post.id); // used to increment to the next post ID
-	window.scrollTo(
-		0,
-		document
-			.querySelector('[data-id="' + post.id + '"]')
-			.getBoundingClientRect().top
-	);
 };
 
 Microblog.prototype.bind_newPostEvents = function(post) {
@@ -238,11 +233,47 @@ Microblog.prototype.bind_newPostEvents = function(post) {
 	}
 
 	function repeat(id) {
-		_this.repeatId = id;
+		var post;
+		var value;
+		var now;
+		var repost = {};
+		var reposted = false;
+
+		for (let i = 0; i < _this.posts.length; i++) {
+			post = _this.posts[i];
+
+			if (!reposted) {
+				for (key in post) {
+					value = post[key];
+
+					if (value === parseInt(id)) {
+						// Copy message and photos
+						repost.message = post.message;
+						repost.photos = post.photos;
+
+						// Update post ID
+						repost.id = _this.lastPostId + 1;
+
+						// Update User to Current User Logged In
+						repost.user = _this.currentUser.id;
+
+						// Update timestamp of repost
+						now = new Date;
+						repost.ts = now.getTime() / 1000;
+
+						_this.posts.push(repost);
+						_this.storeData('posts');
+						_this.postIt(repost, true);
+						reposted = true;
+						break;
+					}
+				}
+			}
+		}
 	}
 
 	function fave(id) {
-        _this.callback();
+		_this.callback();
 	}
 
 	function reply(id) {
@@ -256,12 +287,10 @@ Microblog.prototype.bind_newPostEvents = function(post) {
 		var target = e.currentTarget;
 		var postId = target.getAttribute('data-id');
 
-		//increment(target);
+		_this.callback = function() {
+			increment(target);
+		}.bind(target);
 
-        _this.callback = function() {
-            increment(target)
-        }.bind(target);
-        
 		switch (target.value) {
 			case 'repeat':
 				repeat(postId);
@@ -326,13 +355,15 @@ Microblog.prototype.bindEvents = function() {
 		var length = this.value.length;
 		var charsRemaining = 140 - length;
 
-		if (length > 140) {
-			limitLbl.classList.add('warning');
-		} else {
-			limitLbl.classList.remove('warning');
-		}
-
 		limitLbl.innerHTML = charsRemaining;
+
+		if (length > 140) {
+			newPost.classList.add('warning');
+			postBtn.setAttribute('disabled', true);
+		} else {
+			newPost.classList.remove('warning');
+			postBtn.removeAttribute('disabled');
+		}
 	}
 
 	postBtn.addEventListener('click', function(e) {
@@ -360,8 +391,7 @@ Microblog.prototype.bindEvents = function() {
 				_this.callback();
 			}
 
-            _this.posts.push(newPost);
-            console.log('posts', _this.posts);
+			_this.posts.push(newPost);
 
 			resetLatestPost();
 			updatePostTimes();
@@ -375,7 +405,9 @@ Microblog.prototype.bindEvents = function() {
 		}
 	});
 
+	message.addEventListener('keydown', textAreaHandler, true);
 	message.addEventListener('keypress', textAreaHandler, true);
+	message.addEventListener('keyup', textAreaHandler, true);
 };
 
 Microblog.prototype.init = function() {
@@ -401,8 +433,9 @@ Microblog.prototype.init = function() {
 	// Add Users in Session Cache
 	this.storeData('users');
 
-	// Define the current user who is logged in
-	this.currentUser = this.users['4'].username;
+	// Define the current user who is logged in (should be provided by API)
+	this.currentUser.username = this.users['4'].username;
+	this.currentUser.id = 4;
 
 	// Load pre-existing posts
 	this.createPosts();
