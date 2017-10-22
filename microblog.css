@@ -11,7 +11,8 @@ span {
 }
 
 #timeline {
-	margin: 10px 10px 60px 10px;
+    margin: 10px 10px 60px 10px;
+    min-width: 320px;
 }
 
 #timeline ul {

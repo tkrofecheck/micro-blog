@@ -101,6 +101,12 @@ Microblog.prototype.postIt = function(post, newPost) {
 	var tsHours = new Date(post.ts).getHours() + 'h';
 	var replyTo;
 
+	if (post.photos && post.photos.length > 0) {
+		for (let i = 0; i < post.photos.length; i++) {
+			post.message = post.message.replace(post.photos[i], '');
+		}
+	}
+
 	el.setAttribute('data-id', post.id);
 	el.classList.add('post');
 
@@ -371,6 +377,14 @@ Microblog.prototype.bindEvents = function() {
 		}
 	}
 
+	message.addEventListener('drop', function(e) {
+		e.stopPropagation();
+		e.preventDefault();
+
+		var selected_file = e.dataTransfer.files[0];
+		this.value = this.value + ' ' + selected_file.name;
+	});
+
 	postBtn.addEventListener('click', function(e) {
 		e.preventDefault();
 		e.stopPropagation();
@@ -379,6 +393,9 @@ Microblog.prototype.bindEvents = function() {
 		var timestamp = now.getTime() / 1000;
 		var photos = [];
 		var newPost;
+		var photos = message.value.match(
+			/(?=\w)([\w\/]+(?:.png|.jpg|.jpeg|.gif))|([.\~\-\:\w\/]+(?:.png|.jpg|.jpeg‌​|.gif))/gim
+		);
 
 		newPost = {
 			id: parseInt(_this.lastPostId) + 1,
