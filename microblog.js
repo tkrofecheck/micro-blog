@@ -328,6 +328,9 @@ Microblog.prototype.createPosts = function() {
 
 	for (var i = 0; i < this.posts.length; i++) {
 		post = this.posts[i];
+		post.photos = post.message.match(
+			/(?=\w)([\w\/]+(?:.png|.jpg|.jpeg|.gif|.svg))|([.\~\-\:\w\/]+(?:.png|.jpg|.jpeg‌​|.gif|.svg))/gim
+		);
 		this.postIt(post, false);
 	}
 };
