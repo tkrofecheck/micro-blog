@@ -394,7 +394,7 @@ Microblog.prototype.bindEvents = function() {
 		var photos = [];
 		var newPost;
 		var photos = message.value.match(
-			/(?=\w)([\w\/]+(?:.png|.jpg|.jpeg|.gif))|([.\~\-\:\w\/]+(?:.png|.jpg|.jpeg‌​|.gif))/gim
+			/(?=\w)([\w\/]+(?:.png|.jpg|.jpeg|.gif|.svg))|([.\~\-\:\w\/]+(?:.png|.jpg|.jpeg‌​|.gif|.svg))/gim
 		);
 
 		newPost = {
