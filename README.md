@@ -1,3 +1,5 @@
+NOTE: The below readme is not my own, but from Better Mortgage. Please reach out to them with questions.
+
 # Microblog
 
 This is an incomplete implementation of a Twitter-like single-user microblog timeline. 
